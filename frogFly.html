@@ -91,6 +91,7 @@
 			time = (MAXTIME - timer.getElapsedTime()).toFixed(2);
 			if (time < 0){
 				time=0;
+				alert('Has conseguido '+hits+' diplomas, loser!');
 				scene.stop();
 			}//end if
 			updateScore();
