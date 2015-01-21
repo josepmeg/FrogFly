@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>frogFly</title>
+	<script type="text/javascript"
+			src = "simpleGame.js"></script>
+	<script type="text/javascript"
+			src = "frogLib.js"></script>
+
+	<script type="text/javascript">
+		var scene;
+		var frog;
+		//var fly;
+		var flies;
+		var scoreBoard;
+		var hits;
+		var NUMFLIES = 3;
+		var leaves;
+		var owMP3;
+		var owOGG;
+
+		function init(){
+			scoreBoard = document.getElementById("scoreBoard");
+			hits = 0;
+			scene = new Scene();
+			scene.setSize(800,600);
+			frog = new Frog();
+			//fly = new Fly();
+			setupFlies();
+			leaves = new Sprite(scene,"wood.jpg",1200,800);
+			leaves.setSpeed(0);
+			owMP3 = new Sound("ow.mp3");
+			owOGG = new Sound("ow.ogg");
+			scene.start();
+		}//end init
+
+		function update(){
+			scene.clear();
+			frog.checkKeys();
+			leaves.update();	
+
+			for(i = 0; i < NUMFLIES; i++){
+				flies[i].wriggle();
+				checkCollisions(i);
+				flies[i].update();
+			}//end for loop
+
+			frog.update();
+			//fly.update();
+		}//end update
+
+		function setupFlies(){
+			flies = new Array(NUMFLIES);
+			for (i = 0; i < NUMFLIES; i++){
+				flies[i] = new Fly();
+			}//end for
+		}//end setupFlies	
+
+		function checkCollisions(flyNum){
+			if (frog.collidesWith(flies[flyNum])) {
+				flies[flyNum].reset();
+				owMP3.play();
+				owOGG.play();
+				updateScore();
+			}//end if
+		}//end checkCollisions
+
+		function updateScore(){
+			//update the scoreboard
+			hits += 1;
+			scoreBoard.innerHTML = "Diplomas: " + hits;
+		}//end updateScore
+
+	</script>
+</head>
+<body onload = "init()">
+	<h2>Universitario desesperado</h2>
+	<div id = "scoreBoard">Hits: 0</div>
+</body>
+</html>
